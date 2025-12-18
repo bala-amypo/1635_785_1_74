@@ -1,3 +1,5 @@
 package com.example.demo.service.Impl;
 
-public class FraudDetectionServiceImpl}
+public class FraudDetectionServiceImpl{
+    
+}

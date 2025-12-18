@@ -1,1 +1,5 @@
-package com.example.
+package com.example.demo.service;
+
+public class UserService{
+    
+}

@@ -1,1 +1,5 @@
-package com.example.demo.repositro
+package com.example.demo.repository;
+
+public interface ClaimRepository{
+    
+}

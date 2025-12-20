@@ -1,4 +1,4 @@
-packge com.example.demo.model;
+package com.example.demo.model;
 import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.AllArgsContructor;

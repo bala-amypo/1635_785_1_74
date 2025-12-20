@@ -11,6 +11,9 @@ import com.example.demo.service.UserService;
 @RequestMapping("/auth")
 public class AuthController{
     @Autowired UserService service;
+    public AuthController(UserService service){
+        this.service=service;
+    }
     @PostMapping("/register")
     public User register(@RequestBody User user){
         return service.registerUser(user);

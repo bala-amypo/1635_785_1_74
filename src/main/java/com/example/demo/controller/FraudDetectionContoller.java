@@ -14,5 +14,8 @@ public class FraudDetectionController{
     public FraudCheckResult evaluate(@PathVAriable Long claimId){
         return service.evaluateClaim(claimId);
     }
-    @GetMapping("/result")
+    @GetMapping("/result/claim/{claimId}")
+    public FraudCheckResult getResult(@PathVariable Long claimId){
+        return service.getResultByClaim(claimId);
+    }
 }

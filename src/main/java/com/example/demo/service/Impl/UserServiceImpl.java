@@ -17,9 +17,16 @@ public class UserServiceImpl implements UserService{
         if(repo.existsByEmail(user.getEmail())){
             throw new IllegalArgumentException("Invalid or duplicate email");
         }
-    }
+    
     if(user.getRole()==null){
-        
+        user.setRole("USER")
+    }
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    return repo.save(user);
+    }
+    @Override
+    public User findById(Long id){
+        return repo.findById(id).orElseThrow(()->new)
     }
 
 }

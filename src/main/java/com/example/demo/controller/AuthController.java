@@ -6,5 +6,12 @@ import com.example.demo.service.UserService;
 @RequestMapping("/auth")
 public class AuthController{
     @Autowired UserService service;
-    @PostMapping
+    @PostMapping("/register")
+    public User register(@RequestBody User user){
+        return service.registerUser(user);
+    }
+    @PostMapping("/login")
+    public User login(@RequestBody User user){
+        return service.loginUser(user.getEmail(),user.getPassword());
+    }
 }

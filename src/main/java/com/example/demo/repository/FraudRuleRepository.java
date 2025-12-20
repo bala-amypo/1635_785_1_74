@@ -1,5 +1,7 @@
 package com.example.demo.repository;
-
-public interface FraudRuleRepository{
-    
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.demo.model.FraudRule;
+public interface FraudRuleRepository extends JpaRepository<FraudRule,Long>{
+    Optional<FraudRule> findByRuleName(String ruleName);
+    List<FraudRule> findAll();
 }

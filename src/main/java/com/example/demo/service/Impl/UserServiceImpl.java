@@ -12,6 +12,7 @@ import com.example.demo.repository.UserRepository;
 public class UserServiceImpl implements UserService{
     @Autowired UserRepository repo;
     @Autowired PasswordEncoder passwordEncoder;
+    
     @Override
     public User registerUser(User user){
         if(repo.existsByEmail(user.getEmail())){

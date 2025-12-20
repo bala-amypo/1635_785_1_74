@@ -5,17 +5,14 @@ import com.example.demo.service.FraudDetectionService;
 
 @RestController
 @RequestMapping("/api/fraud-check")
-public class ClaimController{
-    @Autowired ClaimService service;
-    public ClaimController(ClaimService service){
+public class FraudDetectionController{
+    @Autowired FraudDetectionService service;
+    public FraudDetectionController(FraudDetectionService service){
         this.service=service;
     }
-    @PostMapping
-    public Claim submitClaim(@RequestBody Claim claim){
-        return servie.saveClaim(Claim);
+    @PostMapping("/evaluate/{claimId}")
+    public FraudCheckResult evaluate(@PathVAriable Long claimId){
+        return service.evaluateClaim(claimId);
     }
-    @GetMapping("/{id}")
-    public Claim getClaim(@PathVariable Long id){
-        return service.getClaimById(id);
-    }
-    }
+    @GetMapping("/result")
+}

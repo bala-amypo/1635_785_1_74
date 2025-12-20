@@ -5,8 +5,8 @@ import com.example.demo.model.Policy;
 import com.example.demo.model.User;
 
 public interface PolicyRepository extends JpaRepository<Policy, Long>{
-    List<Policy>findByUser(User user);
+    Optional<Policy>findByUser(User user);
     boolean existsByPolicyNumber(String policyNumber);
 
-    List<P
+    List<Policy> findByuserId(Long userId);
 }

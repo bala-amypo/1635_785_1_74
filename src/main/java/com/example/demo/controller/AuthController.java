@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.RequestMapping;
+import org.springframework.beans.factory.annotation.PostMapping;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 @RestController

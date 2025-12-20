@@ -18,6 +18,7 @@ public class FraudCheckResult{
 
     private Long id;
     @OneToOne
+    @JoinColumn(name="claim_id")
     private Claim claim;
     private Boolean isFradulent;
     private String triggeredRuleName;

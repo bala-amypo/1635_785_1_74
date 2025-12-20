@@ -13,6 +13,13 @@ public class UserServiceImpl implements UserService{
     @Autowired UserRepository repo;
     @Autowired PasswordEncoder passwordEncoder;
     @Override
-    public User re
+    public User registerUser(User user){
+        if(repo.existsByEmail(user.getEmail())){
+            throw new IllegalArgumentException("Invalid or duplicate email");
+        }
+    }
+    if(user.getRole()==null){
+        
+    }
 
 }

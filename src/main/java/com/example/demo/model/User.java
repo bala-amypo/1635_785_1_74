@@ -2,7 +2,10 @@ packge com.example.demo.model;
 import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.AllArgsContructor;
-impo
+import lombok.NoArgsConstructor;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 
 @Entity
@@ -10,6 +13,7 @@ impo
 @AllArgsContructor
 @NoArgsConsturctor
 public class User{
-    @
-    
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long
 }

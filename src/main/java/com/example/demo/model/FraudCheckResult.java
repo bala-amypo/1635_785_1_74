@@ -17,9 +17,15 @@ public class FraudCheckResult{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
 
     private Long id;
+    @OneToOne
     private Claim claim;
     private Boolean isFradulent;
     private String triggeredRuleName;
     private String rejectionReason;
     private LocalDateTime checkedAt;
+
+    @PrePersist
+    public void onCreate(){
+        this.checkedAt=LocalDateTime.now();
+    }
 }

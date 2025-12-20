@@ -12,5 +12,11 @@ public class FraudRuleController{
         this.service=service;
     }
     @PostMapping
-    public FraudRule addRule(@R)
+    public FraudRule addRule(@RequestBody FraudRule rule){
+        return service.saveRule(rule);
+    }
+    @GetMapping
+    public List<FraudRule> getRules(){
+        return service.getAllRules();
+    }
 }

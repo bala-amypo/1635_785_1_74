@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 
 @Entity
 @Data
-@AllArgsContructor
+@AllArgsConstructor
 @NoArgsConstructor
 public class User{
     @Id

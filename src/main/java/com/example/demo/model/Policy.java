@@ -11,7 +11,14 @@ import jakarta.persistence.Column;
 @Entity
 @Data
 @AllArgsConstructor
-
+@NoArgsConstructor
 public class Policy{
-    
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
+    private User user;
+    private String policyNumber;
+    private String policyType;
+    private LocalDate startDate;
+    private LocalDate endDate;
 }

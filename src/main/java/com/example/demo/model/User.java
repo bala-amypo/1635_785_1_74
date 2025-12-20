@@ -1,7 +1,7 @@
 package com.example.demo.model;
 import jakarta.persistence.Entity;
 import lombok.Data;
-import lombok.AllArgsContructor;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

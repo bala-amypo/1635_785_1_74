@@ -16,6 +16,8 @@ public class PolicyController{
         return service.savePolicy(policy);
     }
     @GetMapping("/user/{userId}")
-    public List<Policy>
+    public List<Policy> getPoliciesByUser(@PathVariable Long UserId){
+        return service.getPoliciesByUser(userId);
+    }
     
 }

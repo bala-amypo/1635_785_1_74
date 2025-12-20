@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService{
         }
     
     if(user.getRole()==null){
-        user.setRole("USER")
+        user.setRole("USER");
     }
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     return repo.save(user);
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService{
         return repo.findById(id).orElseThrow(()->new ResourceNotFound("User not found"));
     }
     @Override
-    public UserfindByEmail(String email){
+    public User findByEmail(String email){
         return repo.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("User not found"));
     }
 }

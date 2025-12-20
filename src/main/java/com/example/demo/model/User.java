@@ -11,7 +11,7 @@ import jakarta.persistence.Id;
 @Entity
 @Data
 @AllArgsContructor
-@NoArgsConsturctor
+@NoArgsConstructor
 public class User{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

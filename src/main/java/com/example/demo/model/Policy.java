@@ -18,6 +18,7 @@ public class Policy{
     private Long id;
     @ManyToOne
     private User user;
+    @Column(unique=true)
     private String policyNumber;
     private String policyType;
     private LocalDate startDate;

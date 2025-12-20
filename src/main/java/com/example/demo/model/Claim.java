@@ -18,8 +18,8 @@ public class Claim{
     private Long id;
     @ManyToOne
     private Policy policy;
-    private String conditionField;
-    private String operator;
-    private String value;
-    private String severity;
+    private LocalDate claimDate;
+    private Double claimDate;
+    private String description;
+    private String status; 
 }

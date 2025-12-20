@@ -11,5 +11,13 @@ public class ClaimController{
     public ClaimController(ClaimService service){
         this.service=service
     }
+    @PostMapping
+    public Claim submitClaim(@RequestBody Claim claim){
+        return service.saveClaim(claim);
+    }
+    @GetMapping("/{id}")
+    public Claim getClaim(@PathVariable Long id){
+        return service.getClaimById(id)
+    }
     
 }

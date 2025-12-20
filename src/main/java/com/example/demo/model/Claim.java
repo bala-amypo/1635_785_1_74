@@ -16,4 +16,10 @@ public class Claim{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
 
     private Long id;
+    @ManyToOne
+    private Policy policy;
+    private String conditionField;
+    private String operator;
+    private String value;
+    private String severity;
 }

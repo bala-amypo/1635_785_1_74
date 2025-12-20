@@ -16,6 +16,7 @@ public class Policy{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne
     private User user;
     private String policyNumber;
     private String policyType;

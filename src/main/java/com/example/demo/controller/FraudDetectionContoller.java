@@ -4,7 +4,7 @@ import com.example.demo.model.FraudCheckResult;
 import com.example.demo.service.FraudDetectionService;
 
 @RestController
-@RequestMapping("api/claims")
+@RequestMapping("/api/fraud-check")
 public class ClaimController{
     @Autowired ClaimService service;
     public ClaimController(ClaimService service){

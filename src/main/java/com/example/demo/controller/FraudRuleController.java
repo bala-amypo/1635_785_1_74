@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/fraud")
-public class FraudController {
+public class FraudRuleController {
 
     @Autowired
     private FraudDetectionService fraudDetectionService;

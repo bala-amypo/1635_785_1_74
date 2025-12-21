@@ -7,5 +7,8 @@ import com.example.demo.model.FraudDetection;
 import com.example.demo.repository.FraudDetectionRepository;
 @Service
 public class FraudDetectionServiceImpl{
-    @Autowired FraudCheckResult
+    @Autowired FraudCheckResultRepository fraudCheckResultRepository;
+    public FraudDetectionServiceImpl(FraudCheckResultRepository fraudCheckResultRepository){
+        this.fraudCheckResultRepository=fraudCheckResultRepository
+    }
 }

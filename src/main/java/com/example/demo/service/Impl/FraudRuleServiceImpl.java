@@ -15,21 +15,6 @@ public class FraudRuleServiceImpl implements FraudRuleService {
     private FraudRuleRepository fraudRuleRepository;
 
     @Override
-    public FraudRule addRule(FraudRule rule) {
-        if (fraudRuleRepository.findByRuleName(rule.getRuleName()).isPresent()) {
-            throw new IllegalArgumentException("Duplicate rule name");
-        }
-
-        if (!rule.getSeverity().equals("LOW") &&
-            !rule.getSeverity().equals("MEDIUM") &&
-            !rule.getSeverity().equals("HIGH")) {
-            throw new IllegalArgumentException("Invalid severity");
-        }
-
-        return fraudRuleRepository.save(rule);
-    }
-
-    @Override
     public List<FraudRule> getAllRules() {
         return fraudRuleRepository.findAll();
     }

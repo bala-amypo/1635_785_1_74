@@ -1,26 +1,20 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.FraudRule;
-import com.example.demo.service.FraudRuleService;
+import com.example.demo.model.Claim;
+import com.example.demo.model.FraudCheckResult;
+import com.example.demo.service.FraudDetectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/rules")
-public class FraudRuleController {
+@RequestMapping("/api/fraud")
+public class FraudController {
 
     @Autowired
-    private FraudRuleService fraudRuleService;
+    private FraudDetectionService fraudDetectionService;
 
-    @PostMapping
-    public FraudRule addRule(@RequestBody FraudRule rule) {
-        return fraudRuleService.addRule(rule);
-    }
-
-    @GetMapping
-    public List<FraudRule> getAllRules() {
-        return fraudRuleService.getAllRules();
+    @PostMapping("/check")
+    public FraudCheckResult checkFraud(@RequestBody Claim claim) {
+        return fraudDetectionService.checkClaim(claim);
     }
 }

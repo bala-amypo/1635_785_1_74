@@ -3,11 +3,12 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-
+import lombok.Data;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@Data
 @Table(name = "policies")
 @AllArgsConstructor
 @NoArgsConstructor

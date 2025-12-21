@@ -3,11 +3,13 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
+@Data
 @Table(name = "claims")
 @AllArgsConstructor
 @NoArgsConstructor

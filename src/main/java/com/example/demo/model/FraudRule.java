@@ -3,10 +3,11 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-
+import lombok.Data;
 import java.util.Set;
 
 @Entity
+@Data
 @Table(name = "fraud_rules")
 @AllArgsConstructor
 @NoArgsConstructor

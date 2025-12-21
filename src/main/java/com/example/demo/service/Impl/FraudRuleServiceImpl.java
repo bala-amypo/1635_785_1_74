@@ -1,37 +1,37 @@
 package com.example.demo.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
+import com.example.demo.model.FraudRule;
+import com.example.demo.repository.FraudRuleRepository;
+import com.example.demo.service.FraudRuleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.model.Claim;
-import com.example.demo.model.FraudCheckResult;
-import com.example.demo.repository.FraudCheckResultRepository;
-import com.example.demo.service.FraudDetectionService;
+import java.util.List;
 
 @Service
-public class FraudDetectionServiceImpl implements FraudDetectionService {
+public class FraudRuleServiceImpl implements FraudRuleService {
 
-    private final FraudCheckResultRepository fraudCheckResultRepository;
+    @Autowired
+    private FraudRuleRepository fraudRuleRepository;
 
-    public FraudDetectionServiceImpl(FraudCheckResultRepository fraudCheckResultRepository) {
-        this.fraudCheckResultRepository = fraudCheckResultRepository;
+    @Override
+    public FraudRule addRule(FraudRule rule) {
+
+        if (fraudRuleRepository.findByRuleName(rule.getRuleName()).isPresent()) {
+            throw new IllegalArgumentException("Invalid or duplicate rule name");
+        }
+
+        if (!rule.getSeverity().equals("LOW")
+                && !rule.getSeverity().equals("MEDIUM")
+                && !rule.getSeverity().equals("HIGH")) {
+            throw new IllegalArgumentException("Invalid rule severity");
+        }
+
+        return fraudRuleRepository.save(rule);
     }
 
     @Override
-    public FraudCheckResult checkFraud(Claim claim) {
-        FraudCheckResult result = new FraudCheckResult();
-        result.setClaim(claim);
-        result.setFraudDetected(claim.getClaimAmount() > 50000);
-        result.setRuleApplied("AMOUNT_THRESHOLD");
-        result.setCheckedAt(LocalDateTime.now());
-
-        return fraudCheckResultRepository.save(result);
-    }
-
-    @Override
-    public List<FraudCheckResult> getAllResults() {
-        return fraudCheckResultRepository.findAll();
+    public List<FraudRule> getAllRules() {
+        return fraudRuleRepository.findAll();
     }
 }

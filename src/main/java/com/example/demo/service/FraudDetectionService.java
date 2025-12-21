@@ -1,7 +1,10 @@
 package com.example.demo.service;
-package com.example.demo.modelFraudDetection;
 
-public class FraudDetectionService{
+import com.example.demo.model.FraudCheckResult;
+
+public interface FraudDetectionService {
+
     FraudCheckResult evaluateClaim(Long claimId);
+
     FraudCheckResult getResultByClaim(Long claimId);
 }

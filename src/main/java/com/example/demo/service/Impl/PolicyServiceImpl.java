@@ -1,31 +1,50 @@
-package com.example.demo.service.Impl;
-import java.util.List;
+package com.example.demo.service.impl;
+
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.Policy;
+import com.example.demo.model.User;
+import com.example.demo.repository.PolicyRepository;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.service.PolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.service.PolicyService;
-import com.example.demo.model.Policy;
-import com.example.demo.repository.PolicyRepository;
-@Service
-public class PolicyServiceImpl{
-    @Autowired PolicyRepository policyRepository;
 
-    public PolicyServiceImple(PolicyRepository policyRepository){
-        this.policyRepository=policyRepository;
-    }
+import java.util.List;
+
+@Service
+public class PolicyServiceImpl implements PolicyService {
+
+    @Autowired
+    private PolicyRepository policyRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
-    public Policy createPolicy (Policy policy){
-        if(policyRepository.existsByPolicyNumber(policy.getPolicyNumber())){
-            throw new IllegelArgumentException("Duplicate policy number");
+    public Policy createPolicy(Long userId, Policy policy) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        if (policyRepository.existsByPolicyNumber(policy.getPolicyNumber())) {
+            throw new IllegalArgumentException("Policy number already exists");
         }
+
+        if (!policy.getEndDate().isAfter(policy.getStartDate())) {
+            throw new IllegalArgumentException("Invalid policy dates");
+        }
+
+        policy.setUser(user);
         return policyRepository.save(policy);
     }
+
     @Override
-    public Policy findByPolicyNumber(String policyNumber){
-        return policyRepository.findByPolicyNumber(policyNumber).orElseThrow(()->new ResourceNotFoundException("Policy not found"));
+    public List<Policy> getPoliciesByUser(Long userId) {
+        return policyRepository.findByUserId(userId);
     }
+
     @Override
-    public List<Policy> getPoliciesByUserId(Long userId){
-        return policyRepository.findByUSerId(userId);
+    public Policy getPolicy(Long id) {
+        return policyRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Policy not found"));
     }
 }

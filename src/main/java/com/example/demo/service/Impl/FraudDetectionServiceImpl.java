@@ -1,20 +1,69 @@
-package com.example.demo.service.Impl;
+package com.example.demo.service.impl;
+
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
+import com.example.demo.service.FraudDetectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.service.FraudDetectionService;
-import com.example.demo.model.FraudDetection;
-import com.example.demo.repository.FraudDetectionRepository;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Service
-public class FraudDetectionServiceImpl{
-    @Autowired FraudCheckResultRepository fraudCheckResultRepository;
-    public FraudDetectionServiceImpl(FraudCheckResultRepository fraudCheckResultRepository){
-        this.fraudCheckResultRepository=fraudCheckResultRepository;
-    }
+public class FraudDetectionServiceImpl implements FraudDetectionService {
+
+    @Autowired
+    private ClaimRepository claimRepository;
+
+    @Autowired
+    private FraudRuleRepository fraudRuleRepository;
+
+    @Autowired
+    private FraudCheckResultRepository resultRepository;
+
     @Override
-    public FraudCheckResult saveFraudResult(FraudCheckResult result){
-        return fraudCheckResultRepository.save(result);
+    public FraudCheckResult evaluateClaim(Long claimId) {
+
+        Claim claim = claimRepository.findById(claimId)
+                .orElseThrow(() -> new ResourceNotFoundException("Claim not found"));
+
+        List<FraudRule> rules = fraudRuleRepository.findAll();
+
+        for (FraudRule rule : rules) {
+            if (rule.getConditionField().equalsIgnoreCase("claimAmount")) {
+
+                double threshold = Double.parseDouble(rule.getValue());
+
+                if (claim.getClaimAmount() > threshold) {
+                    FraudCheckResult result = new FraudCheckResult(
+                            null,
+                            claim,
+                            true,
+                            rule.getRuleName(),
+                            "Claim amount exceeds threshold",
+                            LocalDateTime.now()
+                    );
+                    return resultRepository.save(result);
+                }
+            }
+        }
+
+        FraudCheckResult result = new FraudCheckResult(
+                null,
+                claim,
+                false,
+                null,
+                "No fraud detected",
+                LocalDateTime.now()
+        );
+
+        return resultRepository.save(result);
     }
+
     @Override
-    public FraudChecResultRepository.findByClaim(claim).orElseThrow(()->new ResourceNotFoundException("Fraud result not found"));
+    public FraudCheckResult getResultByClaim(Long claimId) {
+        return resultRepository.findByClaimId(claimId)
+                .orElseThrow(() -> new ResourceNotFoundException("Result not found"));
+    }
 }

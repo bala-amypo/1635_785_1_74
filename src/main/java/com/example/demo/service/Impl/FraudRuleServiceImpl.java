@@ -1,26 +1,36 @@
-package com.example.demo.service.Impl;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.service.FraudRuleService;
+package com.example.demo.service.impl;
+
 import com.example.demo.model.FraudRule;
 import com.example.demo.repository.FraudRuleRepository;
+import com.example.demo.service.FraudRuleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service
-public class FraudRuleServiceImpl{
-    @Autowired FraudRuleRepository fraudRuleRepository;
-    public FraudRuleRepository(FraudRuleRepository fraudRuleRepository){
-        this.fraudRuleRepository=fraudRuleRepository;
-    }
+public class FraudRuleServiceImpl implements FraudRuleService {
+
+    @Autowired
+    private FraudRuleRepository fraudRuleRepository;
+
     @Override
-    public FraduRule addRule(FraudRule rule){
-        if(fraudRuleRepository.existsByRuleName(rule,getRuleName())){
-            throw new IllegelArgumentException("Duplicate rule name");
+    public FraudRule addRule(FraudRule rule) {
+        if (fraudRuleRepository.findByRuleName(rule.getRuleName()).isPresent()) {
+            throw new IllegalArgumentException("Duplicate rule name");
         }
+
+        if (!rule.getSeverity().equals("LOW") &&
+            !rule.getSeverity().equals("MEDIUM") &&
+            !rule.getSeverity().equals("HIGH")) {
+            throw new IllegalArgumentException("Invalid severity");
+        }
+
         return fraudRuleRepository.save(rule);
     }
+
     @Override
-    public List<FraudRule> getAllRule(){
+    public List<FraudRule> getAllRules() {
         return fraudRuleRepository.findAll();
     }
 }

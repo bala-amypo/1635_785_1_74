@@ -1,14 +1,14 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "fraud_check_results")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class FraudCheckResult {
@@ -17,20 +17,10 @@ public class FraudCheckResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "claim_id", unique = true)
+    @ManyToOne
     private Claim claim;
 
-    private Boolean isFraudulent;
-
-    private String triggeredRuleName;
-
-    private String rejectionReason;
-
+    private boolean fraudDetected;
+    private String ruleApplied;
     private LocalDateTime checkedAt;
-
-    @PrePersist
-    public void onCreate() {
-        this.checkedAt = LocalDateTime.now();
-    }
 }

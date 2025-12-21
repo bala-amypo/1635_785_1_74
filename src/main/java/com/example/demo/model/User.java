@@ -2,16 +2,11 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.util.List;
+import lombok.Data;
 
 @Entity
-@Table(name = "users")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -21,14 +16,7 @@ public class User {
     private Long id;
 
     private String name;
-
-    @Column(unique = true, nullable = false)
     private String email;
-
     private String password;
-
-    private String role;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Policy> policies;
+    private String role; // optional based on PDF
 }

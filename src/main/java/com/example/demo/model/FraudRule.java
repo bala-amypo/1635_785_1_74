@@ -1,27 +1,33 @@
 package com.example.demo.model;
-import jakarta.persistence.Entity;
-import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GEnerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.Set;
 
 @Entity
-@Data
-@AllArgsConstructor
+@Table(name = "fraud_rules")
+@Getter
+@Setter
 @NoArgsConstructor
-public class FraudRule{
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+@AllArgsConstructor
+public class FraudRule {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique=true)
+
+    @Column(unique = true)
     private String ruleName;
+
     private String conditionField;
+
     private String operator;
+
     private String value;
+
     private String severity;
-    
+
+    @ManyToMany(mappedBy = "suspectedRules")
+    private Set<Claim> claims;
 }

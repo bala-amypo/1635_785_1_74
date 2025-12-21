@@ -1,26 +1,36 @@
 package com.example.demo.model;
-import jakarta.persistence.Entity;
-import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
-@Data
-@AllArgsConstructor
+@Table(name = "policies")
+@Getter
+@Setter
 @NoArgsConstructor
-public class Policy{
+@AllArgsConstructor
+public class Policy {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    @Column(unique=true)
+
+    @Column(unique = true)
     private String policyNumber;
+
     private String policyType;
+
     private LocalDate startDate;
+
     private LocalDate endDate;
+
+    @OneToMany(mappedBy = "policy", cascade = CascadeType.ALL)
+    private List<Claim> claims;
 }

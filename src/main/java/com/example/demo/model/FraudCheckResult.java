@@ -1,32 +1,36 @@
 package com.example.demo.model;
-import jakarta.persistence.Entity;
-import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Id;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Entity
-@Data
-@AllArgsConstructor
+@Table(name = "fraud_check_results")
+@Getter
+@Setter
 @NoArgsConstructor
-public class FraudCheckResult{
-      @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+@AllArgsConstructor
+public class FraudCheckResult {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @OneToOne
-    @JoinColumn(name="claim_id")
+    @JoinColumn(name = "claim_id", unique = true)
     private Claim claim;
-    private Boolean isFradulent;
+
+    private Boolean isFraudulent;
+
     private String triggeredRuleName;
+
     private String rejectionReason;
+
     private LocalDateTime checkedAt;
 
     @PrePersist
-    public void onCreate(){
-        this.checkedAt=LocalDateTime.now();
+    public void onCreate() {
+        this.checkedAt = LocalDateTime.now();
     }
 }

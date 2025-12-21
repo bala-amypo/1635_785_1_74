@@ -21,5 +21,11 @@ public class PolicyServiceImpl{
         return policyRepository.save(policy);
     }
     @Override
-    public P
+    public Policy findByPolicyNumber(String policyNumber){
+        return policyRepository.findByPolicyNumber(policyNumber).orElseThrow(()->new ResourceNotFoundException("Policy not found"));
+    }
+    @Override
+    public List<Policy> getPoliciesByUserId(Long userId){
+        return policyRepository.findByUSerId(userId);
+    }
 }

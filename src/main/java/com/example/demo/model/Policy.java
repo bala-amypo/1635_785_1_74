@@ -3,24 +3,31 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
-@Data
-@NoArgsConstructor
+@Table(name = "policies")
 @AllArgsConstructor
+@NoArgsConstructor
 public class Policy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    private User user;
+
+    @Column(unique = true)
     private String policyNumber;
+
+    private String policyType;
+
     private LocalDate startDate;
     private LocalDate endDate;
 
-    @ManyToOne
-    private User user;
+    @OneToMany(mappedBy = "policy")
+    private List<Claim> claims;
 }

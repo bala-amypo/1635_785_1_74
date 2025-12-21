@@ -3,12 +3,13 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.Data;
+
+import java.util.List;
 
 @Entity
-@Data
-@NoArgsConstructor
+@Table(name = "users")
 @AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -16,7 +17,14 @@ public class User {
     private Long id;
 
     private String name;
+
+    @Column(unique = true)
     private String email;
+
     private String password;
-    private String role; // optional based on PDF
+
+    private String role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Policy> policies;
 }

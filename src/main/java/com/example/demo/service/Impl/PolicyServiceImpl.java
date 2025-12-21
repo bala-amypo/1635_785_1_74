@@ -9,4 +9,17 @@ import com.example.demo.repository.UserRepository;
 @Service
 public class PolicyServiceImpl{
     @Autowired PolicyRepository policyRepository;
+
+    public PolicyServiceImple(PolicyRepository policyRepository){
+        this.policyRepository=policyRepository;
+    }
+    @Override
+    public Policy createPolicy (Policy policy){
+        if(policyRepository.existsByPolicyNumber(policy.getPolicyNumber())){
+            throw new IllegelArgumentException("Duplicate policy number");
+        }
+        return policyRepository.save(policy);
+    }
+    @Override
+    public P
 }

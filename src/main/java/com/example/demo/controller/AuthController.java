@@ -18,18 +18,11 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    /**
-     * Register a new user
-     */
     @PostMapping("/register")
     public User register(@RequestBody User user) {
         return userService.registerUser(user);
     }
 
-    /**
-     * Simple login (NO JWT, NO SECURITY)
-     * Just validates email & password and returns user
-     */
     @PostMapping("/login")
     public User login(@RequestBody User request) {
 

@@ -5,6 +5,6 @@ import com.example.demo.model.Policy;
 import java.util.List;
 
 public interface PolicyService {
-    Policy savePolicy(Policy policy);
-    List<Policy> getPoliciesByUserId(Long userId);
+    Policy createPolicy(Long userId, Policy policy);
+    List<Policy> getPoliciesByUser(Long userId);
 }

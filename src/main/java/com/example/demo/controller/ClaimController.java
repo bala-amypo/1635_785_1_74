@@ -12,8 +12,14 @@ public class ClaimController {
     @Autowired
     private ClaimService claimService;
 
-    @PostMapping
-    public Claim addClaim(@RequestBody Claim claim) {
-        return claimService.saveClaim(claim);
+    @PostMapping("/{policyId}")
+    public Claim createClaim(@PathVariable Long policyId,
+                             @RequestBody Claim claim) {
+        return claimService.createClaim(policyId, claim);
+    }
+
+    @GetMapping("/{id}")
+    public Claim getClaim(@PathVariable Long id) {
+        return claimService.getClaim(id);
     }
 }

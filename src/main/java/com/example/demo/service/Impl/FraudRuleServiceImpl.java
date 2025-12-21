@@ -19,4 +19,8 @@ public class FraudRuleServiceImpl{
         }
         return fraudRuleRepository.save(rule);
     }
+    @Override
+    public List<FraudRule> getAllRule(){
+        return fraudRuleRepository.findAll();
+    }
 }

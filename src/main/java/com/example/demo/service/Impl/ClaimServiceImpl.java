@@ -14,6 +14,10 @@ public class ClaimServiceImpl{
     @Override
     public Claim createClaim(claim claim){
         claim.setStatus("PENDING");
-        return claimRepository
+        return claimRepository.save(claim);
+    }
+    @Override
+    public Claim getClaimById(Long id){
+        return claimRepository.findById(id).ElseThrow(()->new ResourceNotFoundException("Claim not found"));
     }
 }

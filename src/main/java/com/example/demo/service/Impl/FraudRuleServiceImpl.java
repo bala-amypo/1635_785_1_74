@@ -1,21 +1,37 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.FraudRule;
-import com.example.demo.repository.FraudRuleRepository;
-import com.example.demo.service.FraudRuleService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import java.time.LocalDateTime;
 import java.util.List;
 
-@Service
-public class FraudRuleServiceImpl implements FraudRuleService {
+import org.springframework.stereotype.Service;
 
-    @Autowired
-    private FraudRuleRepository fraudRuleRepository;
+import com.example.demo.model.Claim;
+import com.example.demo.model.FraudCheckResult;
+import com.example.demo.repository.FraudCheckResultRepository;
+import com.example.demo.service.FraudDetectionService;
+
+@Service
+public class FraudDetectionServiceImpl implements FraudDetectionService {
+
+    private final FraudCheckResultRepository fraudCheckResultRepository;
+
+    public FraudDetectionServiceImpl(FraudCheckResultRepository fraudCheckResultRepository) {
+        this.fraudCheckResultRepository = fraudCheckResultRepository;
+    }
 
     @Override
-    public List<FraudRule> getAllRules() {
-        return fraudRuleRepository.findAll();
+    public FraudCheckResult checkFraud(Claim claim) {
+        FraudCheckResult result = new FraudCheckResult();
+        result.setClaim(claim);
+        result.setFraudDetected(claim.getClaimAmount() > 50000);
+        result.setRuleApplied("AMOUNT_THRESHOLD");
+        result.setCheckedAt(LocalDateTime.now());
+
+        return fraudCheckResultRepository.save(result);
+    }
+
+    @Override
+    public List<FraudCheckResult> getAllResults() {
+        return fraudCheckResultRepository.findAll();
     }
 }

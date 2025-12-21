@@ -9,6 +9,12 @@ import com.example.demo.repository.FraudDetectionRepository;
 public class FraudDetectionServiceImpl{
     @Autowired FraudCheckResultRepository fraudCheckResultRepository;
     public FraudDetectionServiceImpl(FraudCheckResultRepository fraudCheckResultRepository){
-        this.fraudCheckResultRepository=fraudCheckResultRepository
+        this.fraudCheckResultRepository=fraudCheckResultRepository;
     }
+    @Override
+    public FraudCheckResult saveFraudResult(FraudCheckResult result){
+        return fraudCheckResultRepository.save(result);
+    }
+    @Override
+    public FraudChecResultRepository.findByClaim(claim).orElseThrow(()->new ResourceNotFoundException("Fraud result not found"));
 }

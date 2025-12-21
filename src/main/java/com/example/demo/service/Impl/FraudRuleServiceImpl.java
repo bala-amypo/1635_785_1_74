@@ -9,5 +9,14 @@ import com.example.demo.repository.FraudRuleRepository;
 @Service
 public class FraudRuleServiceImpl{
     @Autowired FraudRuleRepository fraudRuleRepository;
-    public FraudRuleRepository
+    public FraudRuleRepository(FraudRuleRepository fraudRuleRepository){
+        this.fraudRuleRepository=fraudRuleRepository;
+    }
+    @Override
+    public FraduRule addRule(FraudRule rule){
+        if(fraudRuleRepository.existsByRuleName(rule,getRuleName())){
+            throw new IllegelArgumentException("Duplicate rule name");
+        }
+        return fraudRuleRepository.save(rule);
+    }
 }

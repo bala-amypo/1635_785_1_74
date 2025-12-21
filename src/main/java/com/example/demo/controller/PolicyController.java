@@ -1,28 +1,27 @@
 package com.example.demo.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
-import java.util.List;
 import com.example.demo.model.Policy;
 import com.example.demo.service.PolicyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/policies")
-public class PolicyController{
-    @Autowired PolicyService service;
-    public PolicyController(PolicyService service){
-        this.service=service;
+public class PolicyController {
+
+    @Autowired
+    private PolicyService policyService;
+
+    @PostMapping("/{userId}")
+    public Policy createPolicy(@PathVariable Long userId,
+                               @RequestBody Policy policy) {
+        return policyService.createPolicy(userId, policy);
     }
-    @PostMapping
-    public Policy createPolicy(@RequestBody Policy policy){
-        return service.savePolicy(policy);
-    }
+
     @GetMapping("/user/{userId}")
-    public List<Policy> getPoliciesByUser(@PathVariable Long UserId){
-        return service.getPoliciesByUser(userId);
+    public List<Policy> getPoliciesByUser(@PathVariable Long userId) {
+        return policyService.getPoliciesByUser(userId);
     }
-    
 }

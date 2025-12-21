@@ -5,6 +5,7 @@ import com.example.demo.dto.AuthResponse;
 import com.example.demo.model.User;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,17 +13,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired UserService userService;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
+    @Autowired
+    private UserService userService;
 
-    public AuthController(UserService userService,
-                          PasswordEncoder passwordEncoder,
-                          JwtUtil jwtUtil) {
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/register")
     public User register(@RequestBody AuthRequest request) {
@@ -41,8 +39,8 @@ public class AuthController {
             throw new IllegalArgumentException("Invalid email or password");
         }
 
-        String token = jwtUtil.generateToken(user.getId(),ser.getEmail(),user.getRole() );
+        String token = jwtUtil.generateToken(user.getId(),user.getEmail(),user.getRole());
 
-        return new AuthResponse(token,user.getId(),user.getEmail(),user.getRole() );
+        return new AuthResponse(token,user.getId(),user.getEmail(),user.getRole());
     }
 }

@@ -1,13 +1,14 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-
 import java.util.List;
 
 @Entity
 @Table(name = "users")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -27,6 +28,4 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Policy> policies;
-
-    // getters & setters REQUIRED (don’t skip)
 }

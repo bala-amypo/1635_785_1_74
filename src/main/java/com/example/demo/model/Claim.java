@@ -1,18 +1,17 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
-@Data
 @Table(name = "claims")
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Claim {
 
     @Id
@@ -30,6 +29,6 @@ public class Claim {
     @ManyToMany
     private Set<FraudRule> suspectedRules;
 
-    @OneToOne(mappedBy = "claim")
-    private FraudCheckResult fraudCheckResult;
+    @OneToOne(mappedBy = "claim", cascade = CascadeType.ALL)
+    private FraudCheckResult result;
 }

@@ -1,17 +1,16 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
-@Data
 @Table(name = "policies")
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Policy {
 
     @Id
@@ -25,10 +24,6 @@ public class Policy {
     private String policyNumber;
 
     private String policyType;
-
     private LocalDate startDate;
     private LocalDate endDate;
-
-    @OneToMany(mappedBy = "policy")
-    private List<Claim> claims;
 }

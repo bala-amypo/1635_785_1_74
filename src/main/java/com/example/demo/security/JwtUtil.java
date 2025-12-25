@@ -18,12 +18,12 @@ public class JwtUtil {
     private final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final long JWT_TOKEN_VALIDITY = 10 * 60 * 60 * 1000;
 
-    // Generate token with username only
+    // Generate token with username/email only
     public String generateToken(String username) {
         return createToken(new HashMap<>(), username);
     }
 
-    // Generate token with additional claims
+    // Generate token with additional claims (id, role)
     public String generateToken(Long id, String email, String role) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", id);
@@ -44,7 +44,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    // Extract username/email from token
+    // Extract email/username from token
     public String getEmailFromToken(String token) {
         return extractClaim(token, Claims::getSubject);
     }

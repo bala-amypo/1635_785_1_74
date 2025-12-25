@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.*;
-import com.example.demo.model.User;
 import com.example.demo.security.JwtUtil;
+import com.example.demo.model.User;
 import com.example.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,32 +11,31 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserService service;
-    private final PasswordEncoder encoder;
-    private final JwtUtil jwt;
+    @Autowired
+    private UserService userService;
 
-    public AuthController(UserService service, PasswordEncoder encoder, JwtUtil jwt) {
-        this.service = service;
-        this.encoder = encoder;
-        this.jwt = jwt;
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    public User register(@RequestBody AuthRequest req) {
-        return service.registerUser(
-                new User(null, req.getName(), req.getEmail(), req.getPassword(), null, null));
+    public String registerUser(@RequestBody User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userService.saveUser(user);
+        return "User registered successfully";
     }
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody AuthRequest req) {
-        User user = service.findByEmail(req.getEmail());
-        if (!encoder.matches(req.getPassword(), user.getPassword()))
-            throw new IllegalArgumentException("Invalid credentials");
+    public String loginUser(@RequestBody User user) {
+        User existingUser = userService.getByEmail(user.getEmail());
 
-        return new AuthResponse(
-                jwt.generateToken(user.getId(), user.getEmail(), user.getRole()),
-                user.getId(),
-                user.getEmail(),
-                user.getRole());
+        if (existingUser != null && passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
+            // Generate JWT token with id, email, role
+            return jwtUtil.generateToken(existingUser.getId(), existingUser.getEmail(), existingUser.getRole());
+        }
+
+        return "Invalid credentials";
     }
 }

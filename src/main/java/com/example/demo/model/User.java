@@ -1,16 +1,15 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+
 import java.util.List;
 
 @Entity
-@Data
 @Table(name = "users")
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -28,4 +27,6 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Policy> policies;
+
+    // getters & setters REQUIRED (don’t skip)
 }

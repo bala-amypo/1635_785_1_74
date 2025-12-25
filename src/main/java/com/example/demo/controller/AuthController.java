@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.security.JwtUtil;
 import com.example.demo.model.User;
+import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,14 +22,16 @@ public class AuthController {
 
     @PostMapping("/register")
     public String registerUser(@RequestBody User user) {
+        // Encode password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.saveUser(user);
+        userService.registerUser(user); // Use existing method
         return "User registered successfully";
     }
 
     @PostMapping("/login")
     public String loginUser(@RequestBody User user) {
-        User existingUser = userService.getByEmail(user.getEmail());
+        // Use existing method
+        User existingUser = userService.findByEmail(user.getEmail());
 
         if (existingUser != null && passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
             // Generate JWT token with id, email, role

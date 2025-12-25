@@ -1,37 +1,33 @@
 package com.example.demo.controller;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import com.example.demo.model.User;
-import com.example.demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.model.Claim;
+import com.example.demo.service.ClaimService;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
-@RequestMapping("/auth")
-public class AuthController {
+@RequestMapping("/api/claims")
+public class ClaimController {
 
-    @Autowired
-    private UserService userService;
+    private final ClaimService service;
 
-    @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        return userService.registerUser(user);
+    public ClaimController(ClaimService service) {
+        this.service = service;
     }
 
-    @PostMapping("/login")
-    public User login(@RequestBody User request) {
+    @PostMapping("/{policyId}")
+    public Claim create(@PathVariable Long policyId,
+                        @RequestBody Claim claim) {
+        return service.createClaim(policyId, claim);
+    }
 
-        User user = userService.findByEmail(request.getEmail());
+    @GetMapping("/{id}")
+    public Claim get(@PathVariable Long id) {
+        return service.getClaim(id);
+    }
 
-        if (!user.getPassword().equals(request.getPassword())) {
-            throw new IllegalArgumentException("Invalid email or password");
-        }
-
-        return user;
+    @GetMapping
+    public List<Claim> all() {
+        return service.getAllClaims();
     }
 }

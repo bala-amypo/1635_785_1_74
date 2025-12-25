@@ -15,16 +15,20 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    // Secret key (use a strong key in production)
     private final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-
-    // Token validity (e.g., 10 hours)
     private final long JWT_TOKEN_VALIDITY = 10 * 60 * 60 * 1000;
 
-    // Generate JWT token
+    // Generate token with username only
     public String generateToken(String username) {
+        return createToken(new HashMap<>(), username);
+    }
+
+    // Generate token with additional claims
+    public String generateToken(Long id, String email, String role) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username);
+        claims.put("id", id);
+        claims.put("role", role);
+        return createToken(claims, email); // email as subject
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
@@ -40,30 +44,25 @@ public class JwtUtil {
                 .compact();
     }
 
-    // Extract username from token
-    public String extractUsername(String token) {
+    // Extract username/email from token
+    public String getEmailFromToken(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    // Extract a specific claim
+    // Extract specific claim
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    // Validate token
-    public boolean validateToken(String token, String username) {
-        final String tokenUsername = extractUsername(token);
-        return (tokenUsername.equals(username) && !isTokenExpired(token));
+    // Validate token with username/email
+    public boolean validateToken(String token, String email) {
+        final String tokenEmail = getEmailFromToken(token);
+        return (tokenEmail.equals(email) && !isTokenExpired(token));
     }
 
-    // Check if token expired
     private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
-
-    private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
+        return extractClaim(token, Claims::getExpiration).before(new Date());
     }
 
     private Claims extractAllClaims(String token) {

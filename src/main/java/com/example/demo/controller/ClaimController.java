@@ -5,26 +5,33 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import com.example.demo.model.Claim;
-import com.example.demo.service.ClaimService;
+
+import com.example.demo.model.User;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/claims")
-public class ClaimController {
+@RequestMapping("/auth")
+public class AuthController {
 
     @Autowired
-    private ClaimService claimService;
+    private UserService userService;
 
-    @PostMapping("/{policyId}")
-    public Claim createClaim(@PathVariable Long policyId,
-                             @RequestBody Claim claim) {
-        return claimService.createClaim(policyId, claim);
+    @PostMapping("/register")
+    public User register(@RequestBody User user) {
+        return userService.registerUser(user);
     }
 
-    @GetMapping("/{id}")
-    public Claim getClaim(@PathVariable Long id) {
-        return claimService.getClaim(id);
+    @PostMapping("/login")
+    public User login(@RequestBody User request) {
+
+        User user = userService.findByEmail(request.getEmail());
+
+        if (!user.getPassword().equals(request.getPassword())) {
+            throw new IllegalArgumentException("Invalid email or password");
+        }
+
+        return user;
     }
 }

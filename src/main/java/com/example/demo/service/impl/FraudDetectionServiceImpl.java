@@ -1,24 +1,29 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.repository.*;
+import com.example.demo.model.Claim;
+import com.example.demo.repository.ClaimRepository;
 import com.example.demo.service.FraudDetectionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FraudDetectionServiceImpl implements FraudDetectionService {
-    private final ClaimRepository claimRepository;
-    private final FraudRuleRepository fraudRuleRepository;
-    private final FraudCheckResultRepository resultRepository;
 
-    public FraudDetectionServiceImpl(ClaimRepository cr, FraudRuleRepository fr, FraudCheckResultRepository rr) {
-        this.claimRepository = cr;
-        this.fraudRuleRepository = fr;
-        this.resultRepository = rr;
+    @Autowired
+    private ClaimRepository claimRepository;
+
+    @Override
+    public void evaluateClaim(Claim claim) {
+        // Simple logic: if amount > 10000, it's suspicious
+        if (claim.getClaimAmount() != null && claim.getClaimAmount() > 10000) {
+            claim.setStatus("FLAGGED");
+        }
     }
 
     @Override
-    public void checkClaim(Long claimId) {
-        // Logic to apply rules from fraudRuleRepository to a claim from claimRepository
-        // and save the final report in resultRepository.
+    public boolean checkClaim(Long claimId) {
+        return claimRepository.findById(claimId)
+                .map(claim -> "FLAGGED".equals(claim.getStatus()))
+                .orElse(false);
     }
 }

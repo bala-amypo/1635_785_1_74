@@ -17,7 +17,7 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
-    public Claim registerClaim(Claim claim, Long policyId) {
+    public Claim createClaim(Long policyId, Claim claim) { // Matches the interface exactly
         if (claim.getClaimDate() != null && claim.getClaimDate().isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("Future date");
         }
@@ -29,12 +29,12 @@ public class ClaimServiceImpl implements ClaimService {
                 .orElseThrow(() -> new IllegalArgumentException("Policy not found"));
         
         claim.setPolicy(p);
-        claim.setStatus("PENDING"); // This works now that you added the field
+        claim.setStatus("PENDING"); 
         return claimRepo.save(claim);
     }
 
     @Override
-    public Claim getClaim(Long id) { // Changed name from getClaimById to getClaim
+    public Claim getClaim(Long id) {
         return claimRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Claim not found"));
     }

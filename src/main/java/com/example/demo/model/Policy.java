@@ -4,6 +4,8 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Entity @Data @NoArgsConstructor
+
+@AllArgsConstructor
 public class Policy {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

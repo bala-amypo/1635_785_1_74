@@ -7,6 +7,8 @@ import java.util.Set;
 // Inside com.example.demo.model.Claim
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Claim {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

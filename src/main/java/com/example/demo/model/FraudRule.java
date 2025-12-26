@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity @Data @NoArgsConstructor
+
+@AllArgsConstructor
+
 public class FraudRule {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

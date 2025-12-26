@@ -18,7 +18,6 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     public Claim registerClaim(Claim claim, Long policyId) {
-        // Validation for the test suite
         if (claim.getClaimDate() != null && claim.getClaimDate().isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("Future date");
         }
@@ -30,12 +29,12 @@ public class ClaimServiceImpl implements ClaimService {
                 .orElseThrow(() -> new IllegalArgumentException("Policy not found"));
         
         claim.setPolicy(p);
-        claim.setStatus("PENDING"); // Often required by fraud detection tests
+        claim.setStatus("PENDING"); // This works now that you added the field
         return claimRepo.save(claim);
     }
 
     @Override
-    public Claim getClaimById(Long id) {
+    public Claim getClaim(Long id) { // Changed name from getClaimById to getClaim
         return claimRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Claim not found"));
     }

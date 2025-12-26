@@ -1,13 +1,10 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.Policy;
+import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
-import java.util.Optional;
 
-public interface PolicyRepository {
+public interface PolicyRepository extends JpaRepository<Policy, Long> {
     boolean existsByPolicyNumber(String policyNumber);
-    Policy save(Policy policy);
-    Optional<Policy> findById(Long id);
     List<Policy> findByUserId(Long userId);
-    long count();
 }

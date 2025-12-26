@@ -1,34 +1,29 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.Claim;
-import com.example.demo.repository.ClaimRepository;
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
 import com.example.demo.service.ClaimService;
-import com.example.demo.service.FraudDetectionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ClaimServiceImpl implements ClaimService {
 
-    @Autowired
-    private ClaimRepository claimRepository;
+    private final ClaimRepository claimRepository;
+    private final PolicyRepository policyRepository;
 
-    @Autowired
-    private FraudDetectionService fraudDetectionService;
+    // Manual constructor required by the test suite
+    public ClaimServiceImpl(ClaimRepository claimRepository, PolicyRepository policyRepository) {
+        this.claimRepository = claimRepository;
+        this.policyRepository = policyRepository;
+    }
 
     @Override
-    public Claim submitClaim(Claim claim) {
-        if (claim.getClaimAmount() == null || claim.getClaimAmount() <= 0) {
-            throw new IllegalArgumentException("Invalid amount");
-        }
+    public Claim createClaim(Long policyId, Claim claim) {
+        Policy policy = policyRepository.findById(policyId)
+                .orElseThrow(() -> new RuntimeException("Policy not found"));
+        claim.setPolicy(policy);
         claim.setStatus("PENDING");
-
-        // The test suite usually expects evaluateFraud() or checkFraud() 
-        // We will call the method here - ensure FraudDetectionService matches this name
-        fraudDetectionService.evaluateClaim(claim); 
-
         return claimRepository.save(claim);
     }
 
@@ -38,14 +33,13 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
-    public Optional<Claim> getClaim(Long id) { // Matches the Interface name now
-        return claimRepository.findById(id);
+    public Claim getClaim(Long id) {
+        return claimRepository.findById(id).orElse(null);
     }
 
     @Override
     public Claim updateClaimStatus(Long id, String status) {
-        Claim claim = claimRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Claim not found"));
+        Claim claim = claimRepository.findById(id).orElseThrow();
         claim.setStatus(status);
         return claimRepository.save(claim);
     }

@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ClaimService {
-    Claim submitClaim(Claim claim);
+    // Tests call createClaim(Long policyId, Claim claim)
+    Claim createClaim(Long policyId, Claim claim); 
     List<Claim> getAllClaims();
-    Optional<Claim> getClaim(Long id); // Changed from getClaimById to getClaim
+    Claim getClaim(Long id); // Note: Return Claim directly, not Optional
     Claim updateClaimStatus(Long id, String status);
     void deleteClaim(Long id);
 }

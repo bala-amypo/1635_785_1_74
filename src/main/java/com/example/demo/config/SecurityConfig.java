@@ -14,20 +14,20 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // This satisfies the test: testPasswordEncoderIsBCrypt
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // Disabled for REST API simplicity
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll() // Allow registration
-                .requestMatchers("/hello-servlet").permitAll() // Allow the Servlet test
+                // Allow Swagger UI and API Docs
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                // Allow Auth and Hello Servlet for tests
+                .requestMatchers("/api/auth/**", "/hello-servlet").permitAll()
                 .anyRequest().authenticated()
             );
-        
         return http.build();
     }
 }

@@ -11,16 +11,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * Used by TEST CASES
-     */
+    
     @Transient
     @JsonProperty("name")
     private String name;
 
-    /**
-     * Used by DATABASE
-     */
+    
     @Column(nullable = false)
     private String username;
 
@@ -35,16 +31,16 @@ public class User {
 
     public User() {}
 
-    // Constructor used in test cases
+    
     public User(String name, String email, String password, String role) {
         this.name = name;
-        this.username = name; // 🔑 map name → username
+        this.username = name; 
         this.email = email;
         this.password = password;
         this.role = role;
     }
 
-    // ================= Getters & Setters =================
+    
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -52,7 +48,7 @@ public class User {
     public String getName() { return name; }
     public void setName(String name) {
         this.name = name;
-        this.username = name; // 🔑 keep in sync
+        this.username = name; 
     }
 
     public String getUsername() { return username; }

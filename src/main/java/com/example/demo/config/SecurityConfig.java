@@ -10,13 +10,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    // Required for UserServiceImpl (PasswordEncoder)
+   
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // Simple security configuration (portal-safe)
+   
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 

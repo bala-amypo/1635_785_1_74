@@ -18,7 +18,7 @@ public class FraudRule {
     private String field;
     private String operator;
     private String value;
-    private String severity; // LOW, MEDIUM, HIGH
+    private String severity; 
 
     @ManyToMany(mappedBy = "suspectedRules")
     private Set<Claim> claims = new HashSet<>();

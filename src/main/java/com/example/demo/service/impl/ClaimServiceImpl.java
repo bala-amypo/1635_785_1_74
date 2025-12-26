@@ -1,50 +1,65 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
+import com.example.demo.model.Claim;
+import com.example.demo.repository.ClaimRepository;
 import com.example.demo.service.ClaimService;
+import com.example.demo.service.FraudDetectionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClaimServiceImpl implements ClaimService {
-    private final ClaimRepository claimRepo;
-    private final PolicyRepository policyRepo;
 
-    public ClaimServiceImpl(ClaimRepository cr, PolicyRepository pr) {
-        this.claimRepo = cr;
-        this.policyRepo = pr;
+    @Autowired
+    private ClaimRepository claimRepository;
+
+    @Autowired
+    private FraudDetectionService fraudDetectionService;
+
+    @Override
+    public Claim submitClaim(Claim claim) {
+        // 1. Basic Validation for tests
+        if (claim.getClaimAmount() == null || claim.getClaimAmount() <= 0) {
+            throw new IllegalArgumentException("Claim amount must be greater than zero");
+        }
+
+        // 2. Set default status
+        claim.setStatus("PENDING");
+
+        // 3. Trigger Fraud Detection logic
+        // This usually populates the 'suspectedRules' set in the Claim model
+        fraudDetectionService.evaluateClaim(claim);
+
+        // 4. Update status if fraud is detected
+        if (claim.getSuspectedRules() != null && !claim.getSuspectedRules().isEmpty()) {
+            claim.setStatus("FLAGGED");
+        }
+
+        return claimRepository.save(claim);
     }
 
     @Override
-    public Claim createClaim(Long policyId, Claim claim) {
-        // Test Requirement: testCreateClaimWithFutureDate
-        if (claim.getClaimDate() != null && claim.getClaimDate().isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Future date");
-        }
-        
-        // Test Requirement: testCreateClaimWithNegativeAmount
-        if (claim.getClaimAmount() != null && claim.getClaimAmount() < 0) {
-            throw new IllegalArgumentException("Negative amount");
-        }
-        
-        Policy p = policyRepo.findById(policyId)
-                .orElseThrow(() -> new IllegalArgumentException("Policy not found"));
-        
-        claim.setPolicy(p);
-        
-        // Test Requirement: testEmptyManyToManySetIsValid
-        if (claim.getSuspectedRules() == null) {
-            claim.setSuspectedRules(new HashSet<>());
-        }
-        
-        return claimRepo.save(claim);
+    public List<Claim> getAllClaims() {
+        return claimRepository.findAll();
     }
 
     @Override
-    public Claim getClaim(Long id) {
-        return claimRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Claim not found"));
+    public Optional<Claim> getClaimById(Long id) {
+        return claimRepository.findById(id);
+    }
+
+    @Override
+    public Claim updateClaimStatus(Long id, String status) {
+        return claimRepository.findById(id).map(claim -> {
+            claim.setStatus(status);
+            return claimRepository.save(claim);
+        }).orElseThrow(() -> new RuntimeException("Claim not found"));
+    }
+
+    @Override
+    public void deleteClaim(Long id) {
+        claimRepository.deleteById(id);
     }
 }

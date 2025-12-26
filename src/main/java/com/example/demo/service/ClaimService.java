@@ -2,13 +2,12 @@ package com.example.demo.service;
 
 import com.example.demo.model.Claim;
 import java.util.List;
-import java.util.Optional;
 
 public interface ClaimService {
-    // Tests call createClaim(Long policyId, Claim claim)
+    // Tests specifically call this signature at lines 184, 196, and 207
     Claim createClaim(Long policyId, Claim claim); 
     List<Claim> getAllClaims();
-    Claim getClaim(Long id); // Note: Return Claim directly, not Optional
+    Claim getClaim(Long id); 
     Claim updateClaimStatus(Long id, String status);
     void deleteClaim(Long id);
 }

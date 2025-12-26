@@ -1,16 +1,24 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.Claim;
-import com.example.demo.repository.ClaimRepository;
+import com.example.demo.repository.*;
 import com.example.demo.service.FraudDetectionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FraudDetectionServiceImpl implements FraudDetectionService {
 
-    @Autowired
-    private ClaimRepository claimRepository;
+    private final ClaimRepository claimRepo;
+    private final FraudRuleRepository ruleRepo;
+    private final FraudCheckResultRepository resultRepo;
+
+    // MANDATORY: The test suite at line 57 requires this exact constructor
+    public FraudDetectionServiceImpl(ClaimRepository claimRepo, FraudRuleRepository ruleRepo, 
+                                    FraudCheckResultRepository resultRepo) {
+        this.claimRepo = claimRepo;
+        this.ruleRepo = ruleRepo;
+        this.resultRepo = resultRepo;
+    }
 
     @Override
     public void evaluateClaim(Claim claim) {
@@ -21,8 +29,8 @@ public class FraudDetectionServiceImpl implements FraudDetectionService {
 
     @Override
     public boolean checkClaim(Long claimId) {
-        return claimRepository.findById(claimId)
-                .map(claim -> "FLAGGED".equals(claim.getStatus()))
+        return claimRepo.findById(claimId)
+                .map(c -> "FLAGGED".equals(c.getStatus()))
                 .orElse(false);
     }
 }

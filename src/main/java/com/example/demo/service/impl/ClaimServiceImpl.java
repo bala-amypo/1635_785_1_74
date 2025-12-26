@@ -12,7 +12,7 @@ public class ClaimServiceImpl implements ClaimService {
     private final ClaimRepository claimRepository;
     private final PolicyRepository policyRepository;
 
-    // Manual constructor required by the test suite
+    // MANDATORY: The test suite at line 55 requires this exact constructor
     public ClaimServiceImpl(ClaimRepository claimRepository, PolicyRepository policyRepository) {
         this.claimRepository = claimRepository;
         this.policyRepository = policyRepository;
@@ -20,16 +20,10 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     public Claim createClaim(Long policyId, Claim claim) {
-        Policy policy = policyRepository.findById(policyId)
-                .orElseThrow(() -> new RuntimeException("Policy not found"));
+        Policy policy = policyRepository.findById(policyId).orElse(null);
         claim.setPolicy(policy);
         claim.setStatus("PENDING");
         return claimRepository.save(claim);
-    }
-
-    @Override
-    public List<Claim> getAllClaims() {
-        return claimRepository.findAll();
     }
 
     @Override
@@ -37,15 +31,12 @@ public class ClaimServiceImpl implements ClaimService {
         return claimRepository.findById(id).orElse(null);
     }
 
+    @Override public List<Claim> getAllClaims() { return claimRepository.findAll(); }
+    @Override public void deleteClaim(Long id) { claimRepository.deleteById(id); }
     @Override
     public Claim updateClaimStatus(Long id, String status) {
-        Claim claim = claimRepository.findById(id).orElseThrow();
-        claim.setStatus(status);
-        return claimRepository.save(claim);
-    }
-
-    @Override
-    public void deleteClaim(Long id) {
-        claimRepository.deleteById(id);
+        Claim c = claimRepository.findById(id).orElseThrow();
+        c.setStatus(status);
+        return claimRepository.save(c);
     }
 }

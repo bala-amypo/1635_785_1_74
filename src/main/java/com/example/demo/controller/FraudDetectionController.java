@@ -1,23 +1,36 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.FraudCheckResult;
 import com.example.demo.model.Claim;
-import com.example.demo.service.FraudDetectionService;
+import com.example.demo.service.ClaimService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/fraud-detection")
+@RequestMapping("/api/fraud")
 public class FraudDetectionController {
 
-    private final FraudDetectionService fraudDetectionService;
+    private final ClaimService claimService;
 
-    public FraudDetectionController(FraudDetectionService fraudDetectionService) {
-        this.fraudDetectionService = fraudDetectionService;
+    public FraudDetectionController(ClaimService claimService) {
+        this.claimService = claimService;
     }
 
-    @PostMapping("/analyze")
-    public ResponseEntity<String> analyzeClaim(@RequestBody Claim claim) {
-        fraudDetectionService.detectFraud(claim);
-        return ResponseEntity.ok("Fraud analysis completed");
+    @PostMapping("/check")
+    public ResponseEntity<FraudCheckResult> checkFraud(@RequestBody Claim claim) {
+        Claim checkedClaim = claimService.checkFraud(claim);
+
+        FraudCheckResult result = new FraudCheckResult(
+                checkedClaim.getId(),
+                checkedClaim.getPolicy() != null ? checkedClaim.getPolicy().getId() : null,
+                checkedClaim.getPolicy() != null ? checkedClaim.getPolicy().getPolicyNumber() : null,
+                checkedClaim.getClaimDate(),
+                checkedClaim.getClaimAmount(),
+                checkedClaim.getDescription(),
+                checkedClaim.getSuspectedRules(),
+                !checkedClaim.getSuspectedRules().isEmpty()
+        );
+
+        return ResponseEntity.ok(result);
     }
 }

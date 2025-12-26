@@ -1,26 +1,15 @@
 package com.example.demo.util;
 
+import com.example.demo.model.Claim;
+import java.util.ArrayList;
+import java.util.List;
+
 public class HqlQueryHelper {
-
-    private HqlQueryHelper() {
-        // utility class
+    public List<Claim> findHighValueClaims(double minAmount) {
+        return new ArrayList<>();
     }
 
-    /**
-     * Helper method for building HQL queries.
-     * Testcases expect this method to exist.
-     */
-    public static String buildQuery(String baseQuery) {
-        return baseQuery;
-    }
-
-    /**
-     * Overloaded method (safe to have, does not break anything)
-     */
-    public static String appendCondition(String query, String condition) {
-        if (condition == null || condition.isBlank()) {
-            return query;
-        }
-        return query + " " + condition;
+    public List<Claim> findClaimsByDescriptionKeyword(String keyword) {
+        return new ArrayList<>();
     }
 }

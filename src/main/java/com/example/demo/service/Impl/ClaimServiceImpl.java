@@ -5,9 +5,11 @@ import com.example.demo.model.Policy;
 import com.example.demo.repository.ClaimRepository;
 import com.example.demo.repository.PolicyRepository;
 import com.example.demo.service.ClaimService;
+
 import java.time.LocalDate;
 
 public class ClaimServiceImpl implements ClaimService {
+
     private final ClaimRepository claimRepository;
     private final PolicyRepository policyRepository;
 
@@ -18,19 +20,19 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     public Claim createClaim(Long policyId, Claim claim) {
+        Policy policy = policyRepository.findById(policyId).orElseThrow();
         if (claim.getClaimDate().isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Future date");
+            throw new IllegalArgumentException("Claim date cannot be in future");
         }
         if (claim.getClaimAmount() < 0) {
-            throw new IllegalArgumentException("Negative amount");
+            throw new IllegalArgumentException("Claim amount cannot be negative");
         }
-        Policy policy = policyRepository.findById(policyId).orElseThrow(() -> new IllegalArgumentException("Policy not found"));
         claim.setPolicy(policy);
         return claimRepository.save(claim);
     }
 
     @Override
-    public Claim getClaim(Long id) {
-        return claimRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Claim not found"));
+    public Claim getClaim(Long claimId) {
+        return claimRepository.findById(claimId).orElseThrow();
     }
 }

@@ -1,3 +1,6 @@
 package com.example.demo.repository;
 
-public interface FraudCheckResultRepository {}
+import com.example.demo.model.FraudCheckResult;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface FraudCheckResultRepository extends JpaRepository<FraudCheckResult, Long> {}

@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.persistence.Entity;
 
 import java.time.LocalDate;
 import java.util.HashSet;

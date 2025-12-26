@@ -2,11 +2,10 @@ package com.example.demo.controller;
 
 import com.example.demo.model.FraudRule;
 import com.example.demo.service.FraudRuleService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/fraud-rules")
+@RequestMapping("/api/rules")
 public class FraudRuleController {
 
     private final FraudRuleService fraudRuleService;
@@ -16,8 +15,7 @@ public class FraudRuleController {
     }
 
     @PostMapping
-    public ResponseEntity<FraudRule> addRule(@RequestBody FraudRule rule) {
-        // Satisfies testFraudRuleEntityValidation and testFraudRuleInvalidSeverity
-        return ResponseEntity.ok(fraudRuleService.addRule(rule));
+    public FraudRule addRule(@RequestBody FraudRule rule) {
+        return fraudRuleService.addRule(rule);
     }
 }

@@ -1,29 +1,38 @@
 package com.example.demo.model;
-import jakarta.persistence.*;
+
 import lombok.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-@Entity @Data @NoArgsConstructor @AllArgsConstructor
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Claim {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Double claimAmount;
+
+    private Double amount;
     private LocalDate claimDate;
     private String description;
     private String status;
-    
+
     @ManyToOne
+    @JoinColumn(name = "policy_id")
     private Policy policy;
 
-    // Required for Section 6 of your tests (Many-to-Many)
     @ManyToMany
-    @JoinTable(
-        name = "claim_fraud_rules",
-        joinColumns = @JoinColumn(name = "claim_id"),
-        inverseJoinColumns = @JoinColumn(name = "rule_id")
-    )
-    private Set<FraudRule> suspectedRules = new HashSet<>();
+    private Set<FraudRule> triggeredRules;
+
+    // Manual constructor to satisfy the test's specific 4-argument call
+    public Claim(Policy policy, LocalDate claimDate, Double amount, String description) {
+        this.policy = policy;
+        this.claimDate = claimDate;
+        this.amount = amount;
+        this.description = description;
+        this.status = "PENDING"; // Default status
+    }
 }

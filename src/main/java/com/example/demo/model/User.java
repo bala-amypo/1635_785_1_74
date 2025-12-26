@@ -1,9 +1,10 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -16,10 +17,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String firstName;
-    private String lastName;
+    private String name;
+
+    @Column(unique = true)
     private String email;
+
     private String password;
+
     private String role;
-    private String phone;
+
+    @OneToMany(mappedBy = "user")
+    private List<Policy> policies;
 }

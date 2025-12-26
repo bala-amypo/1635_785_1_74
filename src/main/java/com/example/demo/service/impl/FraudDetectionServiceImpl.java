@@ -14,7 +14,6 @@ public class FraudDetectionServiceImpl implements FraudDetectionService {
 
     @Override
     public void evaluateClaim(Claim claim) {
-        // Simple logic: if amount > 10000, it's suspicious
         if (claim.getClaimAmount() != null && claim.getClaimAmount() > 10000) {
             claim.setStatus("FLAGGED");
         }

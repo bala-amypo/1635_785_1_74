@@ -2,10 +2,6 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import jakarta.persistence.Entity;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -34,4 +30,12 @@ public class Claim {
         inverseJoinColumns = @JoinColumn(name = "fraud_rule_id")
     )
     private Set<FraudRule> suspectedRules = new HashSet<>();
+
+    // Custom constructor for tests (without id and suspectedRules)
+    public Claim(Policy policy, LocalDate claimDate, Double claimAmount, String description) {
+        this.policy = policy;
+        this.claimDate = claimDate;
+        this.claimAmount = claimAmount;
+        this.description = description;
+    }
 }

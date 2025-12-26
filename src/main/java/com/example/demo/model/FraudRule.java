@@ -1,8 +1,5 @@
 package com.example.demo.model;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import jakarta.persistence.Entity;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,19 +16,16 @@ public class FraudRule {
     private Long id;
 
     private String ruleName;
-    private String fieldName;
-    private String operator;
-    private String value;
-    private String severity;
+    private String description;
+    private int severity;
 
     @ManyToMany(mappedBy = "suspectedRules")
     private Set<Claim> claims = new HashSet<>();
 
-    public FraudRule(String ruleName, String fieldName, String operator, String value, String severity) {
+    // Custom constructor for tests
+    public FraudRule(String ruleName, String description, int severity) {
         this.ruleName = ruleName;
-        this.fieldName = fieldName;
-        this.operator = operator;
-        this.value = value;
+        this.description = description;
         this.severity = severity;
     }
 }

@@ -1,19 +1,23 @@
-package com.example.demo.model;
+package com.example.demo.dto;
+
+import com.example.demo.model.FraudRule;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.persistence.Entity;
-import jakarta.persistence.*;
-import lombok.*;
 
-@Entity
+import java.time.LocalDate;
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class FraudCheckResult {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String matchedRules;
+    private Long claimId;
+    private Long policyId;
+    private String policyNumber;
+    private LocalDate claimDate;
+    private Double claimAmount;
+    private String description;
+    private Set<FraudRule> suspectedRules; // Rules triggered for this claim
+    private boolean isFraudulent; // true if suspectedRules is not empty
 }

@@ -3,5 +3,6 @@ package com.example.demo.service;
 import com.example.demo.model.Claim;
 
 public interface ClaimService {
-    Claim checkFraud(Claim claim);
+    Claim createClaim(Long policyId, Claim claim);
+    Claim getClaim(Long claimId);
 }

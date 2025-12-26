@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="InsuranceSuite">
-    <test name="AllTests">
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Suite">
+    <test name="InsuranceTests">
         <classes>
             <class name="com.example.demo.DemoApplicationTests"/>
         </classes>

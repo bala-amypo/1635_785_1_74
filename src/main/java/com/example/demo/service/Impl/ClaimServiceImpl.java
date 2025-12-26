@@ -1,5 +1,5 @@
 package com.example.demo.service.impl;
-
+import org.springframework.stereotype.Service;
 import com.example.demo.model.Claim;
 import com.example.demo.model.Policy;
 import com.example.demo.repository.ClaimRepository;
@@ -7,7 +7,7 @@ import com.example.demo.repository.PolicyRepository;
 import com.example.demo.service.ClaimService;
 
 import java.time.LocalDate;
-
+@Service
 public class ClaimServiceImpl implements ClaimService {
 
     private final ClaimRepository claimRepository;

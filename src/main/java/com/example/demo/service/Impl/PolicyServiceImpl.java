@@ -1,5 +1,5 @@
 package com.example.demo.service.impl;
-
+import org.springframework.stereotype.Service;
 import com.example.demo.model.Policy;
 import com.example.demo.model.User;
 import com.example.demo.repository.PolicyRepository;
@@ -7,7 +7,7 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.service.PolicyService;
 
 import java.util.List;
-
+@Service
 public class PolicyServiceImpl implements PolicyService {
 
     private final PolicyRepository policyRepository;

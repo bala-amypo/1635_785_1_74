@@ -14,16 +14,14 @@ public class JwtUtil {
     private final SecretKey key;
     private final long expiration;
 
-    // Constructor (secret parameter kept for test compatibility)
+    
     public JwtUtil(String secret, long expiration) {
-        // Generate a secure key automatically (avoids WeakKeyException)
+        
         this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         this.expiration = expiration;
     }
 
-    // ======================
-    // Generate JWT Token
-    // ======================
+    
     public String generateToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getEmail())
@@ -36,9 +34,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    // ======================
-    // Validate JWT Token
-    // ======================
+    
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
@@ -47,14 +43,12 @@ public class JwtUtil {
                     .parseClaimsJws(token);
             return true;
         } catch (Exception e) {
-            // Must return false (test case expectation)
+            
             return false;
         }
     }
 
-    // ======================
-    // Extract Email from JWT
-    // ======================
+    
     public String getEmailFromToken(String token) {
         try {
             Claims claims = Jwts.parserBuilder()

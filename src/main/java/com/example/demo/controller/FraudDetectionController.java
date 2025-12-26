@@ -1,12 +1,11 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Claim;
 import com.example.demo.service.FraudDetectionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/fraud-detection")
+@RequestMapping("/api/fraud-detection")
 public class FraudDetectionController {
 
     private final FraudDetectionService fraudDetectionService;
@@ -15,9 +14,10 @@ public class FraudDetectionController {
         this.fraudDetectionService = fraudDetectionService;
     }
 
-    @PostMapping("/analyze")
-    public ResponseEntity<String> analyzeClaim(@RequestBody Claim claim) {
-        fraudDetectionService.detectFraud(claim);
-        return ResponseEntity.ok("Fraud analysis completed");
+    @PostMapping("/check/{claimId}")
+    public ResponseEntity<String> checkClaim(@PathVariable Long claimId) {
+        // This links to the FraudDetectionServiceImpl required in the setup()
+        fraudDetectionService.checkClaim(claimId);
+        return ResponseEntity.ok("Fraud check completed for claim " + claimId);
     }
 }

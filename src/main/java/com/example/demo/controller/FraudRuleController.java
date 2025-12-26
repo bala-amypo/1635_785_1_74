@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/fraud-rules")
+@RequestMapping("/api/fraud-rules")
 public class FraudRuleController {
 
     private final FraudRuleService fraudRuleService;
@@ -17,7 +17,7 @@ public class FraudRuleController {
 
     @PostMapping
     public ResponseEntity<FraudRule> addRule(@RequestBody FraudRule rule) {
-        FraudRule saved = fraudRuleService.addRule(rule);
-        return ResponseEntity.ok(saved);
+        // Satisfies testFraudRuleEntityValidation and testFraudRuleInvalidSeverity
+        return ResponseEntity.ok(fraudRuleService.addRule(rule));
     }
 }

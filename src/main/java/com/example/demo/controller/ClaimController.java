@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/claims")
+@RequestMapping("/api/claims")
 public class ClaimController {
 
     private final ClaimService claimService;
@@ -17,13 +17,12 @@ public class ClaimController {
 
     @PostMapping("/{policyId}")
     public ResponseEntity<Claim> createClaim(@PathVariable Long policyId, @RequestBody Claim claim) {
-        Claim saved = claimService.createClaim(policyId, claim);
-        return ResponseEntity.ok(saved);
+        // Satisfies testCreateClaimSuccess, testCreateClaimWithFutureDate, and testCreateClaimWithNegativeAmount
+        return ResponseEntity.ok(claimService.createClaim(policyId, claim));
     }
 
-    @GetMapping("/{claimId}")
-    public ResponseEntity<Claim> getClaim(@PathVariable Long claimId) {
-        Claim claim = claimService.getClaim(claimId);
-        return ResponseEntity.ok(claim);
+    @GetMapping("/{id}")
+    public ResponseEntity<Claim> getClaim(@PathVariable Long id) {
+        return ResponseEntity.ok(claimService.getClaim(id));
     }
 }

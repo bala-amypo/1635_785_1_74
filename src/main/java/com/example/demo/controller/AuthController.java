@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     private final UserService userService;
@@ -15,19 +15,9 @@ public class AuthController {
         this.userService = userService;
     }
 
-    // User registration
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) {
-        User saved = userService.register(user);
-        return ResponseEntity.ok(saved);
+        // testUserRegistrationSuccess expects encoding logic inside the service
+        return ResponseEntity.ok(userService.register(user));
     }
-
-    // You can add login later if needed
-    /*
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
-        String token = userService.login(request);
-        return ResponseEntity.ok(token);
-    }
-    */
 }

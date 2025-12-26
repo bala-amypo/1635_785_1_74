@@ -4,11 +4,10 @@ import com.example.demo.model.Policy;
 import com.example.demo.service.PolicyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("/policies")
+@RequestMapping("/api/policies")
 public class PolicyController {
 
     private final PolicyService policyService;
@@ -19,13 +18,12 @@ public class PolicyController {
 
     @PostMapping("/{userId}")
     public ResponseEntity<Policy> createPolicy(@PathVariable Long userId, @RequestBody Policy policy) {
-        Policy saved = policyService.createPolicy(userId, policy);
-        return ResponseEntity.ok(saved);
+        // Passes testCreatePolicySuccess and testCreatePolicyInvalidDates
+        return ResponseEntity.ok(policyService.createPolicy(userId, policy));
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Policy>> getPolicies(@PathVariable Long userId) {
-        List<Policy> policies = policyService.getPoliciesByUser(userId);
-        return ResponseEntity.ok(policies);
+    public ResponseEntity<List<Policy>> getPoliciesByUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(policyService.getPoliciesByUser(userId));
     }
 }

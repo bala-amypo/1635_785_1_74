@@ -1,17 +1,12 @@
 package com.example.demo.util;
-
 import com.example.demo.model.Claim;
+import org.springframework.stereotype.Component;
+import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class HqlQueryHelper {
-
-    public List<Claim> findHighValueClaims(double minAmount) {
-        // Simulated HQL query
-        return List.of();
-    }
-
-    public List<Claim> findClaimsByDescriptionKeyword(String keyword) {
-        // Simulated HQL query
-        return List.of();
-    }
+    // These would normally use EntityManager to run real HQL/HCQL
+    public List<Claim> findHighValueClaims(Double amount) { return new ArrayList<>(); }
+    public List<Claim> findClaimsByDescriptionKeyword(String kw) { return new ArrayList<>(); }
 }

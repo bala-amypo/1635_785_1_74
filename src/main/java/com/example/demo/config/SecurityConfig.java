@@ -20,12 +20,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf.disable()) // Required for REST API testing
             .authorizeHttpRequests(auth -> auth
-                // Allow Swagger UI and API Docs
+                // Explicitly allow Swagger UI components
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                // Allow Auth and Hello Servlet for tests
-                .requestMatchers("/api/auth/**", "/hello-servlet").permitAll()
+                // Allow authentication endpoints
+                .requestMatchers("/api/auth/**").permitAll()
+                // Allow the HelloServlet path from your tests
+                .requestMatchers("/hello-servlet").permitAll()
                 .anyRequest().authenticated()
             );
         return http.build();

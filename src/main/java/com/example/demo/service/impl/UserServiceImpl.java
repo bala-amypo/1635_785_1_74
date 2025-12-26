@@ -1,25 +1,46 @@
 package com.example.demo.service.impl;
+
+import com.example.demo.model.Policy;
 import com.example.demo.model.User;
+import com.example.demo.repository.PolicyRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.service.UserService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.example.demo.service.PolicyService;
 import org.springframework.stereotype.Service;
 
-@Service
-public class UserServiceImpl implements UserService {
-    private final UserRepository repository;
-    private final PasswordEncoder encoder;
+import java.util.List;
 
-    public UserServiceImpl(UserRepository repository, PasswordEncoder encoder) {
-        this.repository = repository;
-        this.encoder = encoder;
+@Service
+public class PolicyServiceImpl implements PolicyService {
+
+    private final PolicyRepository policyRepository;
+    private final UserRepository userRepository;
+
+    public PolicyServiceImpl(PolicyRepository policyRepository,
+                             UserRepository userRepository) {
+        this.policyRepository = policyRepository;
+        this.userRepository = userRepository;
     }
 
-    public User register(User user) {
-        if (repository.existsByEmail(user.getEmail())) {
-            throw new IllegalArgumentException("Email already exists");
+    @Override
+    public Policy createPolicy(Long userId, Policy policy) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (policyRepository.existsByPolicyNumber(policy.getPolicyNumber())) {
+            throw new IllegalArgumentException("Policy number already exists");
         }
-        user.setPassword(encoder.encode(user.getPassword()));
-        return repository.save(user);
+
+        if (policy.getEndDate().isBefore(policy.getStartDate())) {
+            throw new IllegalArgumentException("Invalid policy dates");
+        }
+
+        policy.setUser(user);
+        return policyRepository.save(policy);
+    }
+
+    @Override
+    public List<Policy> getPoliciesByUser(Long userId) {
+        return policyRepository.findByUserId(userId);
     }
 }

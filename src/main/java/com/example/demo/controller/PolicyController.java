@@ -2,27 +2,30 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Policy;
 import com.example.demo.service.PolicyService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/policies")
+@RequestMapping("/policies")
 public class PolicyController {
 
-    private final PolicyService service;
+    private final PolicyService policyService;
 
-    public PolicyController(PolicyService service) {
-        this.service = service;
+    public PolicyController(PolicyService policyService) {
+        this.policyService = policyService;
     }
 
     @PostMapping("/{userId}")
-    public Policy create(@PathVariable Long userId,
-                         @RequestBody Policy policy) {
-        return service.createPolicy(userId, policy);
+    public ResponseEntity<Policy> createPolicy(@PathVariable Long userId, @RequestBody Policy policy) {
+        Policy saved = policyService.createPolicy(userId, policy);
+        return ResponseEntity.ok(saved);
     }
 
     @GetMapping("/user/{userId}")
-    public List<Policy> getByUser(@PathVariable Long userId) {
-        return service.getPoliciesByUser(userId);
+    public ResponseEntity<List<Policy>> getPolicies(@PathVariable Long userId) {
+        List<Policy> policies = policyService.getPoliciesByUser(userId);
+        return ResponseEntity.ok(policies);
     }
 }

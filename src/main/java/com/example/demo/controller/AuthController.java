@@ -1,43 +1,33 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.User;
-import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
 
-    @Autowired
-    private JwtUtil jwtUtil;
-
+    // User registration
     @PostMapping("/register")
-    public String registerUser(@RequestBody User user) {
-        // Encode password before saving
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.registerUser(user); // Use existing method
-        return "User registered successfully";
+    public ResponseEntity<User> register(@RequestBody User user) {
+        User saved = userService.register(user);
+        return ResponseEntity.ok(saved);
     }
 
+    // You can add login later if needed
+    /*
     @PostMapping("/login")
-    public String loginUser(@RequestBody User user) {
-        // Use existing method
-        User existingUser = userService.findByEmail(user.getEmail());
-
-        if (existingUser != null && passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
-            // Generate JWT token with id, email, role
-            return jwtUtil.generateToken(existingUser.getId(), existingUser.getEmail(), existingUser.getRole());
-        }
-
-        return "Invalid credentials";
+    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+        String token = userService.login(request);
+        return ResponseEntity.ok(token);
     }
+    */
 }

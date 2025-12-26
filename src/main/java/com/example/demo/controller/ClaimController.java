@@ -2,32 +2,28 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Claim;
 import com.example.demo.service.ClaimService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
-@RequestMapping("/api/claims")
+@RequestMapping("/claims")
 public class ClaimController {
 
-    private final ClaimService service;
+    private final ClaimService claimService;
 
-    public ClaimController(ClaimService service) {
-        this.service = service;
+    public ClaimController(ClaimService claimService) {
+        this.claimService = claimService;
     }
 
     @PostMapping("/{policyId}")
-    public Claim create(@PathVariable Long policyId,
-                        @RequestBody Claim claim) {
-        return service.createClaim(policyId, claim);
+    public ResponseEntity<Claim> createClaim(@PathVariable Long policyId, @RequestBody Claim claim) {
+        Claim saved = claimService.createClaim(policyId, claim);
+        return ResponseEntity.ok(saved);
     }
 
-    @GetMapping("/{id}")
-    public Claim get(@PathVariable Long id) {
-        return service.getClaim(id);
-    }
-
-    @GetMapping
-    public List<Claim> all() {
-        return service.getAllClaims();
+    @GetMapping("/{claimId}")
+    public ResponseEntity<Claim> getClaim(@PathVariable Long claimId) {
+        Claim claim = claimService.getClaim(claimId);
+        return ResponseEntity.ok(claim);
     }
 }

@@ -4,6 +4,7 @@ import lombok.*;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.HashSet;
 
 @Entity
 @Data
@@ -15,7 +16,9 @@ public class Claim {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double amount;
+    // Change 'amount' to 'claimAmount' to match getClaimAmount()
+    private Double claimAmount; 
+    
     private LocalDate claimDate;
     private String description;
     private String status;
@@ -24,15 +27,16 @@ public class Claim {
     @JoinColumn(name = "policy_id")
     private Policy policy;
 
+    // Change 'triggeredRules' to 'suspectedRules' to match getSuspectedRules()
     @ManyToMany
-    private Set<FraudRule> triggeredRules;
+    private Set<FraudRule> suspectedRules = new HashSet<>();
 
-    // Manual constructor to satisfy the test's specific 4-argument call
-    public Claim(Policy policy, LocalDate claimDate, Double amount, String description) {
+    // Update the custom constructor to use the new names
+    public Claim(Policy policy, LocalDate claimDate, Double claimAmount, String description) {
         this.policy = policy;
         this.claimDate = claimDate;
-        this.amount = amount;
+        this.claimAmount = claimAmount;
         this.description = description;
-        this.status = "PENDING"; // Default status
+        this.status = "PENDING";
     }
 }

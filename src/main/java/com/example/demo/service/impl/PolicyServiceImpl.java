@@ -22,19 +22,19 @@ public class PolicyServiceImpl implements PolicyService {
 
     @Override
     public Policy createPolicy(Long userId, Policy policy) {
-        // 1. Validate Dates (Requirement for testCreatePolicyInvalidDates)
+        // 1. Validate Dates (Required for testCreatePolicyInvalidDates)
         if (policy.getEndDate() != null && policy.getStartDate() != null) {
             if (policy.getEndDate().isBefore(policy.getStartDate())) {
                 throw new IllegalArgumentException("Invalid dates");
             }
         }
 
-        // 2. Check for Duplicate Policy Number (Requirement for testPolicyEntityUniquePolicyNumberConstraint)
+        // 2. Check for Duplicate Policy Number (Required for testPolicyEntityUniquePolicyNumberConstraint)
         if (policyRepository.existsByPolicyNumber(policy.getPolicyNumber())) {
             throw new IllegalArgumentException("Policy number already exists");
         }
 
-        // 3. Link to User (Requirement for testCreatePolicySuccess)
+        // 3. Link to User
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         
@@ -44,13 +44,9 @@ public class PolicyServiceImpl implements PolicyService {
 
     @Override
     public List<Policy> getPoliciesByUser(Long userId) {
-        // Requirement for testGetPoliciesByUser
+        // Required for testGetPoliciesByUser
         return policyRepository.findByUserId(userId);
     }
-
-    @Override
-    public Policy getPolicyById(Long id) {
-        return policyRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Policy not found"));
-    }
+    
+    // REMOVED getPolicyById because it's not in your interface/tests
 }

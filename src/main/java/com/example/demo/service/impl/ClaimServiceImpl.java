@@ -5,6 +5,7 @@ import com.example.demo.repository.*;
 import com.example.demo.service.ClaimService;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.util.HashSet;
 
 @Service
 public class ClaimServiceImpl implements ClaimService {
@@ -17,10 +18,13 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
-    public Claim createClaim(Long policyId, Claim claim) { // Matches the interface exactly
+    public Claim createClaim(Long policyId, Claim claim) {
+        // Test Requirement: testCreateClaimWithFutureDate
         if (claim.getClaimDate() != null && claim.getClaimDate().isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("Future date");
         }
+        
+        // Test Requirement: testCreateClaimWithNegativeAmount
         if (claim.getClaimAmount() != null && claim.getClaimAmount() < 0) {
             throw new IllegalArgumentException("Negative amount");
         }
@@ -29,7 +33,12 @@ public class ClaimServiceImpl implements ClaimService {
                 .orElseThrow(() -> new IllegalArgumentException("Policy not found"));
         
         claim.setPolicy(p);
-        claim.setStatus("PENDING"); 
+        
+        // Test Requirement: testEmptyManyToManySetIsValid
+        if (claim.getSuspectedRules() == null) {
+            claim.setSuspectedRules(new HashSet<>());
+        }
+        
         return claimRepo.save(claim);
     }
 

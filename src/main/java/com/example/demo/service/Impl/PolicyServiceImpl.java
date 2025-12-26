@@ -1,38 +1,33 @@
 package com.example.demo.service.impl;
-import org.springframework.stereotype.Service;
-import com.example.demo.model.Policy;
-import com.example.demo.model.User;
-import com.example.demo.repository.PolicyRepository;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
 import com.example.demo.service.PolicyService;
-
+import org.springframework.stereotype.Service;
 import java.util.List;
+
 @Service
 public class PolicyServiceImpl implements PolicyService {
+    private final PolicyRepository policyRepo;
+    private final UserRepository userRepo;
 
-    private final PolicyRepository policyRepository;
-    private final UserRepository userRepository;
-
-    public PolicyServiceImpl(PolicyRepository policyRepository, UserRepository userRepository) {
-        this.policyRepository = policyRepository;
-        this.userRepository = userRepository;
+    public PolicyServiceImpl(PolicyRepository pr, UserRepository ur) {
+        this.policyRepo = pr;
+        this.userRepo = ur;
     }
 
-    @Override
     public Policy createPolicy(Long userId, Policy policy) {
-        User user = userRepository.findById(userId).orElseThrow();
         if (policy.getEndDate().isBefore(policy.getStartDate())) {
-            throw new IllegalArgumentException("End date before start date");
+            throw new IllegalArgumentException("Invalid dates");
         }
-        if (policyRepository.existsByPolicyNumber(policy.getPolicyNumber())) {
+        if (policyRepo.existsByPolicyNumber(policy.getPolicyNumber())) {
             throw new IllegalArgumentException("Policy number already exists");
         }
+        User user = userRepo.findById(userId).orElseThrow();
         policy.setUser(user);
-        return policyRepository.save(policy);
+        return policyRepo.save(policy);
     }
 
-    @Override
     public List<Policy> getPoliciesByUser(Long userId) {
-        return policyRepository.findByUserId(userId);
+        return policyRepo.findByUserId(userId);
     }
 }

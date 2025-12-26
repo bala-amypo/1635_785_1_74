@@ -1,6 +1,7 @@
 package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 

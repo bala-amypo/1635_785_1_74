@@ -3,7 +3,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
-
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 @Entity @Data @NoArgsConstructor
 
 @AllArgsConstructor

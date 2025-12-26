@@ -4,6 +4,8 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 // Inside com.example.demo.model.Claim
 @Data
 @Entity

@@ -1,10 +1,13 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
+import com.example.demo.model.Claim;
+import com.example.demo.model.Policy;
+import com.example.demo.repository.ClaimRepository;
+import com.example.demo.repository.PolicyRepository;
 import com.example.demo.service.ClaimService;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
+import java.time.LocalDate;
 
 @Service
 public class ClaimServiceImpl implements ClaimService {
@@ -12,31 +15,33 @@ public class ClaimServiceImpl implements ClaimService {
     private final ClaimRepository claimRepository;
     private final PolicyRepository policyRepository;
 
-    // MANDATORY: The test suite at line 55 requires this exact constructor
-    public ClaimServiceImpl(ClaimRepository claimRepository, PolicyRepository policyRepository) {
+    public ClaimServiceImpl(ClaimRepository claimRepository,
+                            PolicyRepository policyRepository) {
         this.claimRepository = claimRepository;
         this.policyRepository = policyRepository;
     }
 
     @Override
     public Claim createClaim(Long policyId, Claim claim) {
-        Policy policy = policyRepository.findById(policyId).orElse(null);
+
+        Policy policy = policyRepository.findById(policyId)
+                .orElseThrow(() -> new IllegalArgumentException("Policy not found"));
+
+        if (claim.getClaimDate().isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Future claim date not allowed");
+        }
+
+        if (claim.getClaimAmount() < 0) {
+            throw new IllegalArgumentException("Invalid claim amount");
+        }
+
         claim.setPolicy(policy);
-        claim.setStatus("PENDING");
         return claimRepository.save(claim);
     }
 
     @Override
     public Claim getClaim(Long id) {
-        return claimRepository.findById(id).orElse(null);
-    }
-
-    @Override public List<Claim> getAllClaims() { return claimRepository.findAll(); }
-    @Override public void deleteClaim(Long id) { claimRepository.deleteById(id); }
-    @Override
-    public Claim updateClaimStatus(Long id, String status) {
-        Claim c = claimRepository.findById(id).orElseThrow();
-        c.setStatus(status);
-        return claimRepository.save(c);
+        return claimRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Claim not found"));
     }
 }

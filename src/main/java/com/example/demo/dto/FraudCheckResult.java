@@ -18,4 +18,4 @@
 //     private String description;
 //     private Set<FraudRule> suspectedRules;
 //     private boolean isFraudulent;
-// }
+// 
